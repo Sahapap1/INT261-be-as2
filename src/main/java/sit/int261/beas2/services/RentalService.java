@@ -1,16 +1,16 @@
-package sit.int261.beas2.service;
+package sit.int261.beas2.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sit.int261.beas2.dto.CreateRentalRequest;
+import sit.int261.beas2.dtos.CreateRentalRequest;
 import sit.int261.beas2.entities.Customer;
 import sit.int261.beas2.entities.Inventory;
 import sit.int261.beas2.entities.Rental;
 import sit.int261.beas2.entities.Staff;
-import sit.int261.beas2.exception.CustomerNotFoundException;
-import sit.int261.beas2.exception.InventoryNotFoundException;
-import sit.int261.beas2.exception.InventoryUnavailableException;
+import sit.int261.beas2.exceptions.CustomerNotFoundException;
+import sit.int261.beas2.exceptions.InventoryNotFoundException;
+import sit.int261.beas2.exceptions.InventoryUnavailableException;
 import sit.int261.beas2.repositories.CustomerRepository;
 import sit.int261.beas2.repositories.InventoryRepository;
 import sit.int261.beas2.repositories.RentalRepository;

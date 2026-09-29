@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sit.int261.beas2.dto.CreateRentalRequest;
+import sit.int261.beas2.dtos.CreateRentalRequest;
 import sit.int261.beas2.entities.Rental;
 import sit.int261.beas2.service.RentalService;
 

@@ -2,92 +2,63 @@ package sit.int261.beas2.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import sit.int261.beas2.dtos.ErrorResponse;
-import sit.int261.beas2.dtos.ViolationResponse;
-
-import java.util.List;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // 400 - Validation failed
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidation(
-            MethodArgumentNotValidException ex) {
-
-        List<ViolationResponse> violations =
-                ex.getBindingResult()
-                        .getFieldErrors()
-                        .stream()
-                        .map(error -> new ViolationResponse(
-                                error.getField(),
-                                error.getDefaultMessage()
-                        ))
-                        .toList();
-
-        ErrorResponse response = new ErrorResponse(
-                "VALIDATION_FAILED",
-                "Request validation failed",
-                HttpStatus.BAD_REQUEST.value(),
-                violations
-        );
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(response);
-    }
-
-    // 404 - Customer not found
     @ExceptionHandler(CustomerNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleCustomerNotFound(
             CustomerNotFoundException ex) {
 
-        ErrorResponse response = new ErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 "CUSTOMER_NOT_FOUND",
                 ex.getMessage(),
-                HttpStatus.NOT_FOUND.value(),
-                null
+                HttpStatus.NOT_FOUND.value()
         );
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(response);
+                .body(errorResponse);
     }
 
-    // 404 - Inventory not found
     @ExceptionHandler(InventoryNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleInventoryNotFound(
             InventoryNotFoundException ex) {
 
-        ErrorResponse response = new ErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 "INVENTORY_NOT_FOUND",
                 ex.getMessage(),
-                HttpStatus.NOT_FOUND.value(),
-                null
+                HttpStatus.NOT_FOUND.value()
         );
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(response);
+                .body(errorResponse);
     }
 
-    // 409 - Inventory is already rented
     @ExceptionHandler(InventoryUnavailableException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ErrorResponse> handleInventoryUnavailable(
             InventoryUnavailableException ex) {
 
-        ErrorResponse response = new ErrorResponse(
+        ErrorResponse errorResponse = new ErrorResponse(
                 "INVENTORY_UNAVAILABLE",
                 ex.getMessage(),
-                HttpStatus.CONFLICT.value(),
-                null
+                HttpStatus.CONFLICT.value()
         );
 
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(response);
+                .body(errorResponse);
     }
 }
